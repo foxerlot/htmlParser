@@ -1,6 +1,8 @@
+#include <stdlib.h>
 #include <stdio.h>
+// #include <string.h>
 #include "utilities.h"
-#include "parse-util.h"
+// #include "parse-util.h"
 
 /* global variables */
 const char *usage = "USAGE: htmlParser [options] <input.hml>...";
@@ -20,18 +22,17 @@ int main(int argc, char **argv)
     {
         for (int i = 0; i < (int) length; i++)
         {
-            if (line[i] == '<')
+            char *tag = NULL;
+            int k = 1;
+            if (line[i++] == '<')
             {
-                /*
-                 * TODO: Implement search function (and utilize here)
-                 */
-                char *tag = NULL;
-                for (int j = 0; line[i] != '>' && line[i] != '\0'; i++, j++)
+                for (int j = 0; line[j] != '>'; j++)
                 {
-                    tag[j] = line[i];
+                    tag = realloc(tag, k++ * sizeof(char));
+                    tag[k] = line[j];
                 }
-                if (close(tag, contents, argv[1]) != 0) DIE("Error parsing file.");
             }
+            printf("%s\n", tag);
         }
     }
 
